@@ -1,0 +1,4 @@
+heights in m
+distances in km
+write tests for all functions as you go
+write docstrings
