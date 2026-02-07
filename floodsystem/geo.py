@@ -27,10 +27,15 @@ def stations_by_river(stations):
     """
     Docstring for stations_by_river
     
-    :param stations: Description
+    :param stations: list of MonitoringStation objects
     """
     #{river: stations}
     stations_by_river_dict = {}
     for station in stations:
         if station.river not in stations_by_river_dict:
-            station.river
+            stations_by_river_dict[station.river] = [station]
+        else:
+            mylist = stations_by_river_dict[station.river]
+            mylist.append(station)
+            stations_by_river_dict[station.river] = mylist
+    return stations_by_river_dict
