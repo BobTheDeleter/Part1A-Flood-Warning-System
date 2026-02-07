@@ -3,7 +3,7 @@ from floodsystem.geo import rivers_with_station
 
 def run():
     """
-    Docstring for run
+    Prints the number of rivers with a station, and the first 10 rivers
     """
     stations = build_station_list()
     rivers = list(rivers_with_station(stations))
