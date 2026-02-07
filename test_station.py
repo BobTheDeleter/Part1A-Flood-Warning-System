@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 """Unit test for the station module"""
 
-from floodsystem.station import MonitoringStation
+from floodsystem.station import MonitoringStation, inconsistent_typical_range_stations
 
 
 def test_create_monitoring_station():
@@ -25,3 +25,25 @@ def test_create_monitoring_station():
     assert s.typical_range == trange
     assert s.river == river
     assert s.town == town
+
+def test_typical_range_consistent():
+    s1 = MonitoringStation("test 1", None, None, None, (1, 10), None, None)
+    s2 = MonitoringStation("test 2", None, None, None, (0, 0), None, None)
+    s3 = MonitoringStation("test 3", None, None, None, None, None, None)
+    s4 = MonitoringStation("test 4", None, None, None, (10, 1), None, None)
+    s5 = MonitoringStation("test 5", None, None, None, (-1, 1), None, None)
+
+    assert s1.typical_range_consistent
+    assert not s2.typical_range_consistent()
+    assert not s3.typical_range_consistent()
+    assert not s4.typical_range_consistent()
+    assert not s5.typical_range_consistent()
+
+def test_inconsistent_typical_range_stations():
+    s1 = MonitoringStation("test 1", None, None, None, (1, 10), None, None)
+    s2 = MonitoringStation("test 2", None, None, None, (0, 0), None, None)
+    s3 = MonitoringStation("test 3", None, None, None, None, None, None)
+    s4 = MonitoringStation("test 4", None, None, None, (10, 1), None, None)
+    s5 = MonitoringStation("test 5", None, None, None, (-1, 1), None, None)
+
+    assert set(inconsistent_typical_range_stations([s1, s2, s3, s4, s5])) == set([s2, s3, s4, s5])
