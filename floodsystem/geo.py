@@ -10,6 +10,9 @@ from floodsystem.station import MonitoringStation
 from haversine import haversine, Unit
 
 def stations_by_distance(stations: list[MonitoringStation], p: tuple[float, float]) -> list[tuple[MonitoringStation, float]]:
+    """
+    Takes a list of stations and a coordinate point and outputs a list of stations and their distances from the point in km, sorted by distance.
+    """
     station_distance = []
     for station in stations:
         distance = haversine(station.coord, p, unit=Unit.KILOMETERS)
@@ -19,6 +22,9 @@ def stations_by_distance(stations: list[MonitoringStation], p: tuple[float, floa
     return station_distance
 
 def stations_within_radius(stations: list[MonitoringStation], centre: tuple[float, float], r: float) -> list[MonitoringStation]:
+    """
+    Takes a list of stations, a coordinate point and a radius in km and outputs only those stations in the list within the radius of the point. 
+    """
     within_radius = []
     for station in stations:
         if haversine(station.coord, centre, unit=Unit.KILOMETERS) <= r:
