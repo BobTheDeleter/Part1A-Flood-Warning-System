@@ -6,4 +6,14 @@ geographical data.
 
 """
 
-from .utils import sorted_by_key  # noqa
+from floodsystem.station import MonitoringStation
+from haversine import haversine, Unit
+
+def stations_by_distance(stations: list[MonitoringStation], p: tuple) -> list[tuple[MonitoringStation, float]]:
+    station_distance = []
+    for station in stations:
+        distance = haversine(station.coord, p, unit=Unit.KILOMETERS)
+        station_distance.append((station, distance))
+
+    station_distance.sort(key=lambda x:x[1])
+    return station_distance
