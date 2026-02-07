@@ -31,11 +31,28 @@ class MonitoringStation:
         self.latest_level = None
 
     def __repr__(self):
-        d = "Station name:     {}\n".format(self.name)
-        d += "   id:            {}\n".format(self.station_id)
-        d += "   measure id:    {}\n".format(self.measure_id)
-        d += "   coordinate:    {}\n".format(self.coord)
-        d += "   town:          {}\n".format(self.town)
-        d += "   river:         {}\n".format(self.river)
-        d += "   typical range: {}".format(self.typical_range)
+        d = "Station name:     {}\n".format(self.name) #string
+        d += "   id:            {}\n".format(self.station_id) #string (hyperlink)
+        d += "   measure id:    {}\n".format(self.measure_id) #string (hyperlink)
+        d += "   coordinate:    {}\n".format(self.coord) #tuple of two floats
+        d += "   town:          {}\n".format(self.town) #string
+        d += "   river:         {}\n".format(self.river) #string
+        d += "   typical range: {}".format(self.typical_range) #tuple of two floats
         return d
+    
+    def typical_range_consistent(self):
+        trange = self.typical_range
+        if trange == (0, 0) or trange == None or trange[0] < 0 or trange[1] < 0:
+            return False
+        elif trange[1] < trange[0]:
+            return False
+        else:
+            return True
+
+def inconsistent_typical_range_stations(stations):
+    inconsistent_stations = []
+    for station in stations:
+        if MonitoringStation.typical_range_consistent(station) == False:
+            inconsistent_stations.append(station)
+    
+    return inconsistent_stations
