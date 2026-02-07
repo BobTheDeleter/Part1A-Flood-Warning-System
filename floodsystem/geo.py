@@ -7,7 +7,7 @@ geographical data.
 """
 
 from .utils import sorted_by_key  # noqa
-
+import heapq
 
 #TASK 1D
 
@@ -25,7 +25,7 @@ def rivers_with_station(stations):
 
 def stations_by_river(stations):
     """
-    Docstring for stations_by_river
+    outputs a dictionary of {rivers (str): [stations (obj)]}
     
     :param stations: list of MonitoringStation objects
     """
@@ -39,3 +39,23 @@ def stations_by_river(stations):
             mylist.append(station)
             stations_by_river_dict[station.river] = mylist
     return stations_by_river_dict
+
+#TASK 1E
+
+def rivers_by_station_number(stations, N):
+    """
+    Creates a list of (river, number of stations) tuples in order of most to least stations
+    
+    :param stations: list of MonitoringStation objects
+    :param N: integer, number of rivers in output list
+    """
+
+    stations_by_river_dict = stations_by_river(stations)
+
+    num_stations_list = [len(stations_list) for stations_list in stations_by_river_dict.values()]
+
+    rivers_numbers = zip(stations_by_river_dict.keys(), num_stations_list)
+
+    sorted_rivers_numbers = heapq.nlargest(N, rivers_numbers, key=lambda x: x[1])
+    
+    return sorted_rivers_numbers
