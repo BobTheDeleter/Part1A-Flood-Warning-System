@@ -27,16 +27,26 @@ def test_create_monitoring_station():
     assert s.town == town
 
 def test_relative_water_level():
-    # Create a station
-    s_id = "test-s-id"
-    m_id = "test-m-id"
-    label = "some station"
-    coord = (-2.0, 4.0)
-    trange = (1, 3)
-    river = "River X"
-    town = "My Town"
-    s = MonitoringStation(s_id, m_id, label, coord, trange, river, town)
-    s.latest_level = 2
+    s1 = MonitoringStation("test 1", None, None, None, (0, 10), None, None)
+    s2 = MonitoringStation("test 1", None, None, None, (0, 10), None, None)
+    s3 = MonitoringStation("test 2", None, None, None, (1, 11), None, None)
+    s4 = MonitoringStation("test 4", None, None, None, (1, 11), None, None)
+    s5 = MonitoringStation("test 5", None, None, None, (1, 11), None, None)
+    s6 = MonitoringStation("test 5", None, None, None, (1, 11), None, None)
+    s1.latest_level = 0
+    s2.latest_level = 10
+    s3.latest_level = 1
+    s4.latest_level = 11
+    s5.latest_level = 6
+    s6.latest_level = 21
+
+    assert s1.relative_water_level() == 0
+    assert s2.relative_water_level() == 1
+    assert s3.relative_water_level() == 0
+    assert s4.relative_water_level() == 1
+    assert s5.relative_water_level() == 0.5
+    assert s6.relative_water_level() == 2
+
     
 def test_typical_range_consistent():
     s1 = MonitoringStation("test 1", None, None, None, (1, 10), None, None)
