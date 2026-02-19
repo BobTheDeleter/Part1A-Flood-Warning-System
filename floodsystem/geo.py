@@ -5,7 +5,7 @@
 geographical data.
 
 """
-
+import heapq
 from floodsystem.station import MonitoringStation
 from haversine import haversine, Unit
 
@@ -31,8 +31,6 @@ def stations_within_radius(stations: list[MonitoringStation], centre: tuple[floa
             within_radius.append(station)
 
     return within_radius
-from .utils import sorted_by_key  # noqa
-import heapq
 
 #TASK 1D
 

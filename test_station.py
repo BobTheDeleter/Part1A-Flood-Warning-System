@@ -33,12 +33,14 @@ def test_relative_water_level():
     s4 = MonitoringStation("test 4", None, None, None, (1, 11), None, None)
     s5 = MonitoringStation("test 5", None, None, None, (1, 11), None, None)
     s6 = MonitoringStation("test 5", None, None, None, (1, 11), None, None)
+    s7 = MonitoringStation("test 5", None, None, None, (-2, 11), None, None)
     s1.latest_level = 0
     s2.latest_level = 10
     s3.latest_level = 1
     s4.latest_level = 11
     s5.latest_level = 6
     s6.latest_level = 21
+    s7.latest_level = 4
 
     assert s1.relative_water_level() == 0
     assert s2.relative_water_level() == 1
@@ -46,6 +48,7 @@ def test_relative_water_level():
     assert s4.relative_water_level() == 1
     assert s5.relative_water_level() == 0.5
     assert s6.relative_water_level() == 2
+    assert s7.relative_water_level() == None
 
     
 def test_typical_range_consistent():

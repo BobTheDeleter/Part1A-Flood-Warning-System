@@ -59,14 +59,14 @@ class MonitoringStation:
         """
         trange = self.typical_range
         level = self.latest_level
-        if self.typical_range_consistent():
+        if self.typical_range_consistent() and level != None:
             return (level - trange[0])/(trange[1] - trange[0])
         else:
             return None
 
 def inconsistent_typical_range_stations(stations):
     """
-    Creates a list of station objects with inconsistent typical ranges
+    Returns a list of station objects with inconsistent typical ranges
     """
     inconsistent_stations = []
     for station in stations:
