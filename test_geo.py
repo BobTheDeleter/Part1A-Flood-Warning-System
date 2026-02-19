@@ -1,3 +1,28 @@
+from floodsystem.geo import stations_by_distance, stations_within_radius
+from floodsystem.station import MonitoringStation
+
+def test_stations_by_distance():
+    stations = [
+        MonitoringStation(None, None, "test 1", (0, 0), None, None, "test 1"),
+        MonitoringStation(None, None, "test 2", (0, 90), None, None, "test 2"),
+        MonitoringStation(None, None, "test 3", (0, 180), None, None, "test 3"),
+    ]
+
+    station_distances = stations_by_distance(stations, (1, 1))
+
+    assert [sd[0].name for sd in station_distances] == ["test 1", "test 2", "test 3"]
+
+def test_stations_within_radius():
+    stations = [
+        MonitoringStation(None, None, "test 1", (0, 0), None, None, "test 1"),
+        MonitoringStation(None, None, "test 2", (0, 1), None, None, "test 2"),
+        MonitoringStation(None, None, "test 3", (0, 5), None, None, "test 3"),
+    ]
+        
+    within_radius = stations_within_radius(stations, (0, 0), 120)
+    names = [wr.name for wr in within_radius]
+
+    assert ("test 1" in names) and ("test 2" in names) and ("test 3" not in names)
 """ unit test for the geo module """
 
 from floodsystem.geo import rivers_with_station, stations_by_river, rivers_by_station_number
@@ -26,3 +51,7 @@ def test_stations_by_river():
 def test_rivers_by_station_number():
     assert rivers_by_station_number(test_stations, 2) == [("River Cam", 2), ("River Thames", 1)]
     assert rivers_by_station_number(test_stations, 1) == [("River Cam", 2)]
+    new_test_stations = test_stations
+    new_test_stations.append(MonitoringStation("station 4", "Measure 4", "Label 4", "Coord 4", "Trange4", "River Severn", "Town 4"))
+    assert rivers_by_station_number(new_test_stations, 2) == [("River Cam", 2), ("River Thames", 1), ("River Severn", 1)]
+
