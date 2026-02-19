@@ -51,3 +51,7 @@ def test_stations_by_river():
 def test_rivers_by_station_number():
     assert rivers_by_station_number(test_stations, 2) == [("River Cam", 2), ("River Thames", 1)]
     assert rivers_by_station_number(test_stations, 1) == [("River Cam", 2)]
+    new_test_stations = test_stations
+    new_test_stations.append(MonitoringStation("station 4", "Measure 4", "Label 4", "Coord 4", "Trange4", "River Severn", "Town 4"))
+    assert rivers_by_station_number(new_test_stations, 2) == [("River Cam", 2), ("River Thames", 1), ("River Severn", 1)]
+

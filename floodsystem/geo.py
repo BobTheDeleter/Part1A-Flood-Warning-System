@@ -82,5 +82,12 @@ def rivers_by_station_number(stations, N):
     rivers_numbers = zip(stations_by_river_dict.keys(), num_stations_list)
 
     sorted_rivers_numbers = heapq.nlargest(N, rivers_numbers, key=lambda x: x[1])
+
+    for i in range(len(num_stations_list)):
+        number = num_stations_list[i]
+        river = list(stations_by_river_dict.keys())[i]
+        if number == sorted_rivers_numbers[-1][1]:
+            if (river, number) not in sorted_rivers_numbers:
+                sorted_rivers_numbers.append((river, number))
     
     return sorted_rivers_numbers

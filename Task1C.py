@@ -9,8 +9,9 @@ def run():
     stations = build_station_list()
 
     within_radius = stations_within_radius(stations, (52.2053, 0.1218), 10)
-
-    print([wr.name for wr in within_radius])
+    names = [wr.name for wr in within_radius]
+    names.sort()
+    print(names)
 
 if __name__ == "__main__":
     print("*** Task 1C: CUED Part IA Flood Warning System ***")
