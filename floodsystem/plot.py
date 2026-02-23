@@ -2,13 +2,18 @@
 This module provides functionality for plotting monitoring station data
 """
 
-from .station import MonitoringStation
-from datetime import datetime
-import plotly.express as px
+from floodsystem.station import MonitoringStation
+import datetime
 from plotly.subplots import make_subplots
 from plotly import graph_objects
+from floodsystem.analysis import polyfit
 
-def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[list[datetime]], levels_combined: list[list[float]]):
+def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[list[datetime.datetime]], levels_combined: list[list[float]]):
+    '''
+    This function plots the water level over time and typical range for between 1 and 6 monitoring stations.
+    It takes in a list of stations, a list of lists of dates [[station 1 dates], [station 2 dates]] and a list of lists of water levels [[station 1 levels], [station 2 levels]].
+    '''
+    
     if len(stations) > 6 or len(stations) < 1:
         raise ValueError("Can only plot between 1 and 6 stations.")
     if len(stations) != len(dates_combined) or len(stations) != len(levels_combined):
@@ -38,6 +43,55 @@ def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[lis
         figure.add_hline(y=station.typical_range[0], line_color='#ff0000', row=row, col=col)
         figure.add_hline(y=station.typical_range[1], line_color='#0000ff', row=row, col=col)
     
+    figure.update_layout(showlegend=False, title_text=f'Water level over time for {", ".join([station.name for station in stations])}')
+
+    figure.show()
+
+def plot_water_level_with_fit(stations: list[MonitoringStation], dates_combined: list[list[datetime.datetime]], levels_combined: list[list[float]], p: int):
+    '''
+    This function plots both the raw water level over time and polynomial fit for between 1 and 6 monitoring stations.
+    It takes in a list of stations, a list of lists of dates [[station 1 dates], [station 2 dates]] and a list of lists of water levels [[station 1 levels], [station 2 levels]].
+    '''
+
+    if len(stations) > 6 or len(stations) < 1:
+        raise ValueError("Can only plot between 1 and 6 stations.")
+    if len(stations) != len(dates_combined) or len(stations) != len(levels_combined):
+        raise ValueError("Number of stations, date series and level series don't match.")
+    
+    # Enough space for up to 6 plots
+    figure = make_subplots(rows=2, cols=3, subplot_titles=[station.name for station in stations])
+
+    for i in range(len(stations)):
+        station = stations[i]
+        dates = dates_combined[i]
+        levels = levels_combined[i]
+
+        # Determining row and 
+        row = (i // 3) + 1
+        col = (i % 3) + 1
+
+        figure.add_trace(
+            graph_objects.Line(
+                x=dates,
+                y=levels
+            ),
+            row=row, col=col
+        )
+
+        # calculate polynomial
+        poly, d0 = polyfit(dates, levels, p)
+        figure.add_trace(
+            graph_objects.Line(
+                x=dates,
+                y=poly([date.timestamp()-d0 for date in dates])
+            ),
+            row=row, col=col
+        )
+
+        # Lines for typical range
+        figure.add_hline(y=station.typical_range[0], line_color='#ff0000', row=row, col=col)
+        figure.add_hline(y=station.typical_range[1], line_color='#0000ff', row=row, col=col)
+
     figure.update_layout(showlegend=False, title_text=f'Water level over time for {", ".join([station.name for station in stations])}')
 
     figure.show()

@@ -1,12 +1,12 @@
 """
-Plots the water levels and typical ranges over the past 10 days for the 5 stations at which the current relative water level is greatest.
+Plots the water levels, degree-4 polynomial fit and typical range over the past 2 days for the 5 stations at which the current relative water level is greatest.
 """
 
 import datetime
 
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.stationdata import build_station_list
-from floodsystem.plot import plot_water_levels
+from floodsystem.plot import plot_water_level_with_fit
 from floodsystem.stationdata import update_water_levels
 
 def run():
@@ -34,7 +34,7 @@ def run():
 
         i += 1
 
-    plot_water_levels(top_5, dates_combined, levels_combined)
+    plot_water_level_with_fit(top_5, dates_combined, levels_combined, 4)
 
 if __name__ == '__main__':
     run()
