@@ -38,13 +38,13 @@ def test_plot_water_levels():
     except ValueError:
         pass
 
-from floodsystem.plot import plot_water_levels
-from floodsystem.station import MonitoringStation
-from floodsystem.stationdata import build_station_list
-import datetime
+    try:
+        plot_water_levels([], [], [])
+    except ValueError:
+        pass
 
 def test_plot_water_levels_with_fit():
-    try:
+    try: #levels don't match
         plot_water_level_with_fit(
             [MonitoringStation(None, None, None, None, None, None, None)],
             [[]],
@@ -53,7 +53,7 @@ def test_plot_water_levels_with_fit():
     except ValueError:
         pass
 
-    try:
+    try: #stations don't match
         plot_water_level_with_fit(
             [],
             [[]],
@@ -62,7 +62,7 @@ def test_plot_water_levels_with_fit():
     except ValueError:
         pass
 
-    try:
+    try: #dates don't match
         plot_water_level_with_fit(
             [MonitoringStation(None, None, None, None, None, None, None)],
             [],
@@ -71,11 +71,16 @@ def test_plot_water_levels_with_fit():
     except ValueError:
         pass
 
-    try:
+    try: # greater than 6 stations
         plot_water_level_with_fit(
             [MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None), MonitoringStation(None, None, None, None, None, None, None)],
             [[], [], [], [], [], [], []],
             [[], [], [], [], [], [], []], 1
         )
+    except ValueError:
+        pass
+
+    try: # no data
+        plot_water_level_with_fit([], [], [], 1)
     except ValueError:
         pass

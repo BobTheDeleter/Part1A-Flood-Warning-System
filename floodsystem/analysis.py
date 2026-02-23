@@ -14,7 +14,8 @@ def polyfit(dates: list[datetime.datetime], levels: list[float], p: int) -> tupl
     date_floats = [date.timestamp() for date in dates]
 
     # shift dates to avoid floating point errors with large floats
-    p_coeff = numpy.polyfit([date_float - date_floats[0] for date_float in date_floats], levels, p)
+    shifted_dates = [d - date_floats[0] for d in date_floats]
+    p_coeff = numpy.polyfit(shifted_dates, levels, p)
     poly = numpy.poly1d(p_coeff)
 
     return (poly, date_floats[0])
