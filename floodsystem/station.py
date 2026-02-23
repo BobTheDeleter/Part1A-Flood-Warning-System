@@ -41,7 +41,6 @@ class MonitoringStation:
         return d
     
     def typical_range_consistent(self):
-        #add comments
         trange = self.typical_range
         if trange == (0, 0) or trange == None or trange[0] < 0 or trange[1] < 0:
             return False
