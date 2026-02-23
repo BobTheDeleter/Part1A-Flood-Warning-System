@@ -7,7 +7,6 @@ from datetime import datetime
 import plotly.express as px
 from plotly.subplots import make_subplots
 from plotly import graph_objects
-import pandas
 
 def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[list[datetime]], levels_combined: list[list[float]]):
     if len(stations) > 6 or len(stations) < 1:
@@ -39,6 +38,6 @@ def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[lis
         figure.add_hline(y=station.typical_range[0], line_color='#ff0000', row=row, col=col)
         figure.add_hline(y=station.typical_range[1], line_color='#0000ff', row=row, col=col)
     
-    figure.update_layout(showlegend=False, title_text=f'Water level over time for {', '.join([station.name for station in stations])}')
+    figure.update_layout(showlegend=False, title_text=f'Water level over time for {", ".join([station.name for station in stations])}')
 
     figure.show()
