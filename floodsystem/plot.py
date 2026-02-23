@@ -4,11 +4,15 @@ This module provides functionality for plotting monitoring station data
 
 from .station import MonitoringStation
 from datetime import datetime
-import plotly.express as px
 from plotly.subplots import make_subplots
 from plotly import graph_objects
 
 def plot_water_levels(stations: list[MonitoringStation], dates_combined:list[list[datetime]], levels_combined: list[list[float]]):
+    '''
+    This function plots the water level over time and typical range for between 1 and 6 monitoring stations.
+    It takes in a list of stations, a list of lists of dates [[station 1 dates], [station 2 dates]] and a list of lists of water levels [[station 1 levels], [station 2 levels]].
+    '''
+    
     if len(stations) > 6 or len(stations) < 1:
         raise ValueError("Can only plot between 1 and 6 stations.")
     if len(stations) != len(dates_combined) or len(stations) != len(levels_combined):
