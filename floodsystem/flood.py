@@ -18,3 +18,25 @@ def stations_level_over_threshold(stations, tol):
                 stations_levels.append((station, level))
     stations_levels.sort(key=lambda x: x[1], reverse=True)
     return stations_levels
+
+#might need further measures to exclude illigitimate data, eg thornhill
+
+def alt_stations_highest_rel_level(stations, N):
+    """
+    returns a list of station objects of the N highest relative water levels
+
+    :param stations: list of station objects
+    :param N: integer, number of stations to return
+    """
+    stations_levels = []
+    for station in stations:
+        level = station.relative_water_level()
+        if type(level) == float:
+            stations_levels.append((station, level))
+    sorted_stations_levels = heapq.nlargest(N, stations_levels, key=lambda x: x[1])
+    return [station_level[0] for station_level in sorted_stations_levels]
+
+def stations_highest_rel_level(stations, N):
+    stations_levels = stations_level_over_threshold(stations, 0)
+    n_stations_levels = stations_levels[0:N]
+    return [station_level[0] for station_level in n_stations_levels]
