@@ -5,7 +5,7 @@
 geographical data.
 
 """
-
+import heapq
 from floodsystem.station import MonitoringStation
 from haversine import haversine, Unit
 
@@ -31,8 +31,6 @@ def stations_within_radius(stations: list[MonitoringStation], centre: tuple[floa
             within_radius.append(station)
 
     return within_radius
-from .utils import sorted_by_key  # noqa
-import heapq
 
 #TASK 1D
 
@@ -83,6 +81,7 @@ def rivers_by_station_number(stations, N):
 
     sorted_rivers_numbers = heapq.nlargest(N, rivers_numbers, key=lambda x: x[1])
 
+    #deals with ones with equal
     for i in range(len(num_stations_list)):
         number = num_stations_list[i]
         river = list(stations_by_river_dict.keys())[i]

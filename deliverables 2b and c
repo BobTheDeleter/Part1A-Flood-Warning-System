@@ -1,0 +1,49 @@
+2.2.2. Task 2B: assess flood risk by level¶
+Add a method to MonitoringStation that the returns the latest water level as a fraction of the typical range, i.e. a ratio of 1.0 corresponds to a level at the typical high and a ratio of 0.0 corresponds to a level at the typical low. The method should have the signature:
+
+def relative_water_level(self):
+If the necessary data is not available or is inconsistent, the function should return None.
+
+In the submodule flood, implement a function that returns a list of tuples, where each tuple holds (i) a station (object) at which the latest relative water level is over tol and (ii) the relative water level at the station. The returned list should be sorted by the relative level in descending order. The function should have the signature:
+
+def stations_level_over_threshold(stations, tol):
+where stations is a list of MonitoringStation objects. Consider only stations with consistent typical low/high data.
+
+Demonstration program
+
+Provide a program file Task2B.py that prints the name of each station at which the current relative level is over 0.8, with the relative level alongside the name (do not forget to handle the cases of inconsistent range data). Typical output will be of the form:
+
+Ledgard Bridge 3.982
+Godstow Lock 1.56198347107438
+Windyridge Road 1.4470588235294117
+Castle Mill (Bedford) 1.3333333333333328
+Newark Weir 1.249999999999988
+Cam 1.1813725490196074
+Hayes Basin 1.166666666666667
+Eckington Sluice 1.0875462392108504
+Romney Lock 1.0829268292682928
+Pinkhill Lock 1.0524475524475525
+.
+.
+Explore your implementation for different tolerances.
+
+2.2.3. Task 2C: most at risk stations¶
+Implement a function in the submodule flood that returns a list of the N stations (objects) at which the water level, relative to the typical range, is highest. The list should be sorted in descending order by relative level. The function should have the signature:
+
+def stations_highest_rel_level(stations, N):
+where stations is a list of MonitoringStation objects.
+
+Demonstration program
+
+Provide a program file Task2C.py that prints the names of the 10 stations at which the current relative level is highest, with the relative level beside each station name. Typical output will be of the form:
+
+Ledgard Bridge 3.982
+Godstow Lock 1.56198347107438
+Windyridge Road 1.4470588235294117
+Castle Mill (Bedford) 1.3333333333333328
+Newark Weir 1.249999999999988
+Cam 1.1813725490196074
+Hayes Basin 1.166666666666667
+Eckington Sluice 1.0875462392108504
+Romney Lock 1.0829268292682928
+Pinkhill Lock 1.0524475524475525

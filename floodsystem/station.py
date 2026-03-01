@@ -41,6 +41,10 @@ class MonitoringStation:
         return d
     
     def typical_range_consistent(self):
+        """
+        Checks if typical_range is a consistent and reasonable value
+        Returns True / False
+        """
         trange = self.typical_range
         if trange == (0, 0) or trange == None or trange[0] < 0 or trange[1] < 0:
             return False
@@ -48,8 +52,22 @@ class MonitoringStation:
             return False
         else:
             return True
+        
+    def relative_water_level(self):
+        """
+        Finds fraction of current water level compared to typical water level
+        """
+        trange = self.typical_range
+        level = self.latest_level
+        if self.typical_range_consistent() and level != None:
+            return (level - trange[0])/(trange[1] - trange[0])
+        else:
+            return None
 
 def inconsistent_typical_range_stations(stations):
+    """
+    Returns a list of station objects with inconsistent typical ranges
+    """
     inconsistent_stations = []
     for station in stations:
         if MonitoringStation.typical_range_consistent(station) == False:
