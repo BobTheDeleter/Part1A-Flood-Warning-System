@@ -8,31 +8,24 @@ from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.stationdata import build_station_list
 from floodsystem.plot import plot_water_level_with_fit
 from floodsystem.stationdata import update_water_levels
+from floodsystem.flood import stations_highest_rel_level
 
 def run():
     stations = build_station_list()
     update_water_levels(stations)
-    stations.sort(key = lambda x: x.latest_level or 0, reverse=True) # sorted list of stations, highest to lowest
-    
-    # prep vars for plotting call
-    top_5 = []
+
+    top_5 = stations_highest_rel_level(stations, 5)
     dates_combined = []
     levels_combined = []
 
-    i = 0
-    while len(top_5) < 5: 
-        station = stations[i]
+    for station in top_5: 
         dates, levels = fetch_measure_levels(
             station.measure_id,
             dt = datetime.timedelta(days=2)
         )
 
-        if len(dates) > 0 and len(levels) > 0 and station.typical_range_consistent(): # if data is valid for plotting
-            top_5.append(station) # add it to plotted stations
-            dates_combined.append(dates)
-            levels_combined.append(levels)
-
-        i += 1
+        dates_combined.append(dates)
+        levels_combined.append(levels)
 
     plot_water_level_with_fit(top_5, dates_combined, levels_combined, 4)
 

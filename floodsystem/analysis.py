@@ -10,6 +10,9 @@ def polyfit(dates: list[datetime.datetime], levels: list[float], p: int) -> tupl
     This function returns a polynomial of degree p using x = dates and y = levels.
     It also returns a date offset, which should be subtracted from any input to the polynomial. This is done to avoid floating point errors.
     '''
+    if len(dates) == 0 or len(levels) == 0: # if there is no data, return a 0 polynomial
+        return (numpy.poly1d([0]), 0)
+
     # convert dates to floats
     date_floats = [date.timestamp() for date in dates]
 

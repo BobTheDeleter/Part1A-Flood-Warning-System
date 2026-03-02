@@ -1,7 +1,8 @@
 from floodsystem.station import MonitoringStation
 import heapq
+from floodsystem.datafetcher import fetch_measure_levels
 
-def stations_level_over_threshold(stations, tol):
+def stations_level_over_threshold(stations: list[MonitoringStation], tol: float):
     """
     Returns a list of tuples (stations, relative_water_level) of stations with level over the tolerance
     
@@ -36,7 +37,7 @@ def alt_stations_highest_rel_level(stations, N):
     sorted_stations_levels = heapq.nlargest(N, stations_levels, key=lambda x: x[1])
     return [station_level[0] for station_level in sorted_stations_levels]
 
-def stations_highest_rel_level(stations, N):
+def stations_highest_rel_level(stations, N) -> list[MonitoringStation]:
     stations_levels = stations_level_over_threshold(stations, 0)
     n_stations_levels = stations_levels[0:N]
     return [station_level[0] for station_level in n_stations_levels]
