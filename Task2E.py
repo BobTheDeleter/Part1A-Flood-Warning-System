@@ -33,7 +33,7 @@ def run():
             levels_combined.append(levels)
 
         i += 1
-
+    #top_5 = stations_highest_rel_level(stations, 5)
     plot_water_levels(top_5, dates_combined, levels_combined)
 
 if __name__ == '__main__':

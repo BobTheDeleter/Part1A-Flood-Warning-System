@@ -21,6 +21,25 @@ def stations_level_over_threshold(stations, tol):
 
 #might need further measures to exclude illigitimate data, eg thornhill
 
+def f_level_over_threshold(f, stations, tol):
+    """
+    Returns a list of stations with level over the tolerance, sorted by greatest to least level.
+    
+    :param f: a property of station, such as current level, predicted level, or rate of increase???
+    :param stations: list of station objects
+    :param tol: float, tolerance of relative water level
+    """
+
+    #In the submodule flood, implement a function that returns a list of tuples, where each tuple holds (i) a station (object) at which the latest relative water level is over tol and (ii) the relative water level at the station. The returned list should be sorted by the relative level in descending order. 
+    stations_levels = []
+    for station in stations:
+        level = f(station) #could change if f is a method of station?
+        if type(level) == float:
+            if level > tol:
+                stations_levels.append((station, level))
+    stations_levels.sort(key=lambda x: x[1], reverse=True)
+    return [x[0] for x in stations_levels]
+
 def alt_stations_highest_rel_level(stations, N):
     """
     returns a list of station objects of the N highest relative water levels
