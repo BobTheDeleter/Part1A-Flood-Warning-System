@@ -9,15 +9,13 @@ def test_stations_level_over_threshold():
     s5 = MonitoringStation("test 5", None, None, None, (0, 10), None, None)
     s6 = MonitoringStation("test 6", None, None, None, (-2, 10), None, None)
 
-    s1.latest_level = 0
-    s2.latest_level = 5
-    s3.latest_level = 10
+    s1.latest_level = 0.0
+    s2.latest_level = 5.0
+    s3.latest_level = 10.0
     s4.latest_level = 12.5
-    s5.latest_level = 20
-    s6.latest_level = 6
-
+    s5.latest_level = 20.0
+    s6.latest_level = 6.0
     tolerance = 1.0
-    print(stations_level_over_threshold([s1, s2, s3, s4, s5, s6], tolerance))
 
     assert stations_level_over_threshold([s1, s2, s3, s4, s5, s6], tolerance) == [(s5, 2.0), (s4, 1.25)]
 
@@ -29,17 +27,16 @@ def test_f_level_over_threshold():
     s5 = MonitoringStation("test 5", None, None, None, (0, 10), None, None)
     s6 = MonitoringStation("test 6", None, None, None, (-2, 10), None, None)
 
-    s1.latest_level = 0
-    s2.latest_level = 5
-    s3.latest_level = 10
+    s1.latest_level = 0.0
+    s2.latest_level = 5.0
+    s3.latest_level = 10.0
     s4.latest_level = 12.5
-    s5.latest_level = 20
-    s6.latest_level = 6
+    s5.latest_level = 20.0
+    s6.latest_level = 6.0
+    tolerance = 10
 
-    tolerance = 1.0
-    print(f_level_over_threshold([s1, s2, s3, s4, s5, s6], tolerance))
-
-    assert f_level_over_threshold([s1, s2, s3, s4, s5, s6], tolerance) == [(s5, 2.0), (s4, 1.25)]
+    print(f_level_over_threshold(lambda station: station.latest_level, [s1, s2, s3, s4, s5, s6], tolerance))
+    assert f_level_over_threshold((lambda station: station.latest_level), [s1, s2, s3, s4, s5, s6], tolerance) == [s5, s4]
 
 def test_stations_highest_rel_level():
     
@@ -58,4 +55,4 @@ def test_stations_highest_rel_level():
     
     assert stations_highest_rel_level([s1, s2, s3, s4, s5, s6], 3) == [s5, s4, s3]
 
-test_stations_level_over_threshold()
+test_f_level_over_threshold()
