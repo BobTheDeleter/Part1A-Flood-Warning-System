@@ -21,7 +21,7 @@ def polyfit(dates: list[datetime.datetime], levels: list[float], p: int) -> tupl
 
     return (poly, date_floats[0])
 
-def stations_over_thresholds(stations: list[MonitoringStation], tolerances: list[float]) -> list[list[MonitoringStation]]:
+def stations_over_relative_level(stations: list[MonitoringStation], tolerances: list[float]) -> list[list[MonitoringStation]]:
     """
     Returns a list of lists of stations based on the current relative water level of the station, and the given tolerances for each risk level.
     """
@@ -37,7 +37,7 @@ def stations_over_thresholds(stations: list[MonitoringStation], tolerances: list
 
     return stations_at_above_tolerance
 
-def predict_level_over_range(station: MonitoringStation, polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime) -> numpy.ndarray:
+def apply_polynomial_to_date_range(polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime) -> numpy.ndarray:
     """
     Returns the predicted relative water level of a station after a given number of days, based on a polynomial fit to historic data.
     """
@@ -48,10 +48,10 @@ def predict_level_over_range(station: MonitoringStation, polynomial_fit: numpy.p
     date_range_timstamps = numpy.array([date.timestamp() for date in date_range])
     return polynomial_fit(date_range_timstamps - date_offset)
 
-def will_exceed_threshold_in_range(station: MonitoringStation, polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime, relative_tol: float) -> bool:
+def will_exceed_relative_level_in_range(station: MonitoringStation, polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime, relative_tol: float) -> bool:
     """
     Returns True if the predicted water level of a station will exceed its typical range in the given date range, and False otherwise.
     """
 
-    predicted_levels = predict_level_over_range(station, polynomial_fit, date_offset, start_date, end_date)
+    predicted_levels = apply_polynomial_to_date_range(polynomial_fit, date_offset, start_date, end_date)
     return any(predicted_levels > station.typical_range[1]*relative_tol)
