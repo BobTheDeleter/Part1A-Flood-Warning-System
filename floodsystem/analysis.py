@@ -21,15 +21,37 @@ def polyfit(dates: list[datetime.datetime], levels: list[float], p: int) -> tupl
 
     return (poly, date_floats[0])
 
-def risk_assessment(stations, severe_tol, high_tol, moderate_tol):
+def stations_over_thresholds(stations: list[MonitoringStation], tolerances: list[float]) -> list[list[MonitoringStation]]:
     """
-    Returns a list of [[severe towns], [high towns], [moderate towns], [low towns]] based on the level of the station in each town, and the given tolerances for each risk level.
+    Returns a list of lists of stations based on the current relative water level of the station, and the given tolerances for each risk level.
+    """
+    tolerances.sort(reverse=True) # highest risk level first
+    stations_at_above_tolerance = []
+
+    for tol in tolerances:
+        stations_at_above_tolerance.append(set(station_rel_level[0] for station_rel_level in stations_level_over_threshold(stations, tol)))
+
+    for i, risk_level in enumerate(stations_at_above_tolerance, start=1):
+        for higher_risk_level in stations_at_above_tolerance[:i-1]:
+            risk_level -= higher_risk_level
+
+    return stations_at_above_tolerance
+
+def predict_level_over_range(station: MonitoringStation, polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime) -> numpy.ndarray:
+    """
+    Returns the predicted relative water level of a station after a given number of days, based on a polynomial fit to historic data.
     """
 
-    #creates sets of severe, high, and moderate risk towns by subtracting higher risk sets from a set of everything above a particular risk level's threshold.
-    severe_towns = set([x[0].town for x in stations_level_over_threshold(stations, severe_tol)]) #+ ... in f_level_over_threshold(lamda station...)
-    high_towns = set([x[0].town for x in stations_level_over_threshold(stations, high_tol)]) - severe_towns
-    moderate_towns =  set([x[0].town for x in stations_level_over_threshold(stations, moderate_tol)]) - high_towns
-    low_towns = set(x.town for x in stations) - moderate_towns
+    # create hourly intervals between start and end date
+    date_range = [start_date + datetime.timedelta(hours=i) for i in range(int((end_date - start_date).total_seconds() / 3600) + 1)]
+    # predict level for each datetime
+    date_range_timstamps = numpy.array([date.timestamp() for date in date_range])
+    return polynomial_fit(date_range_timstamps - date_offset)
 
-    return [list(severe_towns), list(high_towns), list(moderate_towns), list(low_towns)]
+def will_exceed_threshold_in_range(station: MonitoringStation, polynomial_fit: numpy.poly1d, date_offset: float, start_date: datetime.datetime, end_date: datetime.datetime, relative_tol: float) -> bool:
+    """
+    Returns True if the predicted water level of a station will exceed its typical range in the given date range, and False otherwise.
+    """
+
+    predicted_levels = predict_level_over_range(station, polynomial_fit, date_offset, start_date, end_date)
+    return any(predicted_levels > station.typical_range[1]*relative_tol)

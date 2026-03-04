@@ -1,7 +1,7 @@
 from floodsystem.station import MonitoringStation
 import heapq
 
-def stations_level_over_threshold(stations, tol):
+def stations_level_over_threshold(stations: list[MonitoringStation], tol: float) -> list[tuple[MonitoringStation, float]]:
     """
     Returns a list of tuples (stations, relative_water_level) of stations with level over the tolerance
     
