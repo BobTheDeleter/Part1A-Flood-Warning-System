@@ -28,7 +28,7 @@ class MonitoringStation:
         self.river = river
         self.town = town
 
-        self.latest_level = None
+        self.latest_level: float | None = None
 
     def __repr__(self):
         d = "Station name:     {}\n".format(self.name) #string

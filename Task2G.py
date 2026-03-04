@@ -3,7 +3,7 @@ import datetime
 
 from floodsystem.flood import *
 from floodsystem.stationdata import build_station_list, update_water_levels
-from floodsystem.analysis import stations_over_relative_level, polyfit, will_exceed_relative_level_in_range
+from floodsystem.analysis import stations_over_relative_levels, polyfit, will_exceed_relative_level_in_range
 from floodsystem.datafetcher import fetch_measure_levels
 
 def run():
@@ -20,7 +20,7 @@ def run():
     MODERATE_FUTURE_WINDOW_DAYS = 10
     SEVERE_FUTURE_WINDOW_DAYS = 14
 
-    stations_at_risk = stations_over_relative_level(stations, [FLOOD, SEVERE, MODERATE, LOW])
+    stations_at_risk = stations_over_relative_levels(stations, [FLOOD, SEVERE, MODERATE, LOW])
 
     currently_flooding_stations = stations_at_risk[0]
     print("Currently flooding:")
