@@ -1,0 +1,22 @@
+#list the towns where you assess the risk of flooding to be greatest. 
+# Explain the criteria that you have used in making your assessment, 
+# and rate the risk at ‘severe’, ‘high’, ‘moderate’ or ‘low’.
+
+#CRITERIA:
+Towns where current relative level > 1.2 ???? Maybe make 1.2 a variable
+OR towns where future predicted relative level > 1.2
+
+ok maybe:
+SEVERE: 
+Towns where current or predicted relative level > 1.5
+Towns where there is a very rapid historical increase
+
+HIGH: 
+Towns where current or predicted relative level > 1.2
+Towns where there is a rapid historical increase
+
+MODERATE:
+Towns where current or predicted relative level > 1
+
+LOW:
+other

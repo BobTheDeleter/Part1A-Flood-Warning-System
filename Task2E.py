@@ -25,9 +25,19 @@ def run():
             dt = datetime.timedelta(days=2)
         )
 
+<<<<<<< HEAD
         dates_combined.append(dates)
         levels_combined.append(levels)
 
+=======
+        if len(dates) > 0 and len(levels) > 0 and station.typical_range_consistent(): # if data is valid for plotting
+            top_5.append(station) # add it to plotted stations
+            dates_combined.append(dates)
+            levels_combined.append(levels)
+
+        i += 1
+    #top_5 = stations_highest_rel_level(stations, 5)
+>>>>>>> 2G
     plot_water_levels(top_5, dates_combined, levels_combined)
 
 if __name__ == '__main__':

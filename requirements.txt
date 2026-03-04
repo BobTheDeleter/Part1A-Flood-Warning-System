@@ -10,10 +10,12 @@ kiwisolver==1.4.9
 narwhals==2.16.0
 numpy==2.4.2
 packaging==26.0
+pandas==3.0.1
 pillow==12.1.1
+pip==24.0
 plotly==6.5.2
 pluggy==1.6.0
-Pygments==2.19.2
+pygments==2.19.2
 pyparsing==3.3.2
 pytest==9.0.2
 python-dateutil==2.9.0.post0
