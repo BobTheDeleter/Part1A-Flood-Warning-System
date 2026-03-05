@@ -59,8 +59,9 @@ class MonitoringStation:
         """
         trange = self.typical_range
         level = self.latest_level
-        if self.typical_range_consistent() and level != None:
-            return (level - trange[0])/(trange[1] - trange[0])
+        if self.typical_range_consistent() and level != None: #makes sure data is good
+            #formula for relative level (level - lower bound of typical level)/(range)
+            return (level - trange[0])/(trange[1] - trange[0])         
         else:
             return None
 
